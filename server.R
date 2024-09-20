@@ -1,12 +1,12 @@
 # Define server logic required to draw a histogram
 function(input, output, session) {
   # make reactive inputs and examples
-  example_counts <- reactive({read.delim("data/example_counts.txt")})
-  example_design <- reactive({read.delim("data/example_design.txt")})
+  example_counts <- reactive({read.delim("data/example_rnaseq_counts.txt")})
+  example_design <- reactive({read.delim("data/example_rnaseq_design.txt")})
   
   #download example counts file
   output$example_counts <- downloadHandler(
-    filename = "example_counts.txt",
+    filename = "example_rnaseq_counts.txt",
     content = function(filename){
       write.table(example_counts(), filename, row.names = F, quote = F, sep = "\t")
     },
@@ -15,7 +15,7 @@ function(input, output, session) {
   
   #download examples experimental design file
   output$example_design <- downloadHandler(
-    filename = "example_design.txt",
+    filename = "example_rnaseq_design.txt",
     content = function(filename){
       write.table(example_design(), filename, row.names = F, quote = F, sep = "\t")
     },
