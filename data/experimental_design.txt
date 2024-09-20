@@ -1,7 +1,0 @@
-Sample	Study	condition
-SRR1019362	A	Control
-SRR1019365	A	Treated
-SRR1019366	B	Control
-SRR12763768	B	Treated
-SRR12763769	C	Control
-SRR12763774	C	Treated

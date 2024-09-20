@@ -1,0 +1,13 @@
+sample	study	condition
+Sample1	A	Treated
+Sample2	A	Treated
+Sample3	A	Cont
+Sample4	A	Cont
+Sample5	B	Cont
+Sample6	B	Cont
+Sample7	B	Treated
+Sample8	B	Treated
+Sample9	C	Cont
+Sample10	C	Cont
+Sample11	C	Treated
+Sample12	C	Treated
