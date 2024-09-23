@@ -15,6 +15,9 @@ new_packages <- required_packages[!(required_packages %in% installed.packages()[
 #install missing ones from CRAN
 if(length(new_packages)) install.packages(new_packages, dependencies = TRUE)
 #install missing ones from BioConductor
+#check if BiocManager exists
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 if(length(new_packages)) BiocManager::install(new_packages, dependencies = TRUE)
 
 if (!require("devtools")) install.packages("devtools")

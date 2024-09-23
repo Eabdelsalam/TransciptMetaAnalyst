@@ -19,6 +19,11 @@ test_exp_design <- function(exp_design) {
   else if (!length(unique(exp_design$condition)) == 2) {
     shinyalert(text = "The Experimental Design file should have two unique conditions only!")
   }
+  
+  # test if sample names has duplication
+  else if (sum(duplicated(exp_design$sample)) > 0) {
+    shinyalert(text = "The sample 'column' in the Experimental Design file duplicated sample names, please correct and re-upload it!")
+  }
 }
 
 ##test rna-seq counts
@@ -26,13 +31,13 @@ test_counts <- function(counts) {
   col_names <- colnames(counts)
   
   # test that essential columns existing
-  if (!"geneid" %in% col_names) {
-    shinyalert(text = "The column 'geneid'(case sensitive) should exist in the counts file!")
+  if (!"Geneid" %in% col_names) {
+    shinyalert(text = "The column 'Geneid'(case sensitive) should exist in the counts file!")
   }
   
   # test if gene names has duplication
-  if (sum(duplicated(counts$geneid)) > 0) {
-    shinyalert(text = "The column 'geneid'has duplicated gene names, please correct and re-upload it!")
+  if (sum(duplicated(counts$Geneid)) > 0) {
+    shinyalert(text = "The column 'Geneid' has duplicated gene names, please correct and re-upload it!")
   }
 }
 

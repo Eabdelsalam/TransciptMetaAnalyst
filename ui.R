@@ -154,7 +154,7 @@ ui <- dashboardPage(
                                               downloadButton("download_kegg_plot_rnaseq", label = "Download KEGG plot"))),
                               box(title = "Count plots", status = "primary", solidHeader = T,
                                   textOutput("counts_message_rnaseq"),
-                                  plotOutput("counts_plots_rnaseq"),
+                                  plotOutput("counts_plots_rnaseq", height = "550px"),
                                   downloadButton("download_counts_plot_rnaseq", label = "Download counts plot"))
                             )))
       ), #close rnaseq tab item

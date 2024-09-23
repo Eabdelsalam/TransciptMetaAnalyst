@@ -1,4 +1,4 @@
-geneid	Chr	Start	End	Strand	Length	gene	Sample1	Sample2	Sample3	Sample4	Sample5	Sample6	Sample7	Sample8	Sample9	Sample10	Sample11	Sample12
+Geneid	Chr	Start	End	Strand	Length	gene	Sample1	Sample2	Sample3	Sample4	Sample5	Sample6	Sample7	Sample8	Sample9	Sample10	Sample11	Sample12
 slr0612	CHR	811	1494	+	684	NA	587	705	591	491	94	208	221	244	3	3	5	0
 slr0613	CHR	1577	2098	+	522	NA	2082	2900	2790	2056	251	585	664	655	3	3	10	0
 sll0558	CHR	2172	2873	-	702	NA	2163	2923	3269	2880	272	738	908	603	6	9	12	5
