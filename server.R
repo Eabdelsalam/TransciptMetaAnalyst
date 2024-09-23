@@ -69,7 +69,7 @@ function(input, output, session) {
       
       #provide info about starting the analysis
       shinyalert("Running...", "RNA-Seq meta-analysis is in progress... \nResults will appear soon!",
-                 type = "info", closeOnEsc = T, closeOnClickOutside = T)
+                 type = "info", closeOnEsc = T, closeOnClickOutside = T, timer = 7000)
       #hide information box and show different results boxes
       shinyjs::hide("rnaseq_steps")
       shinyjs::show("general_results_rnaseq")
@@ -310,9 +310,9 @@ function(input, output, session) {
              breaks = 100, col = "grey", xlab = "Raw p-values (meta-analysis)")
       })
       #download p-values dist
-      output$download_pdist_rnaseq <- downloadHandler("rnaseq_pdist.tiff",
+      output$download_pdist_rnaseq <- downloadHandler("rnaseq_pdist.svg",
                                                       content = function(file) {
-                                                        tiff(file, width = 15, height = 12, units = "cm", res = 300, compression = "lzw")
+                                                        svg(file, width = 6, height = 4.5)
                                                         hist(fishcomb()$rawpval, main = "Fisher Method p-Values Distribution",
                                                              breaks = 100, col = "grey", xlab = "Raw p-values (meta-analysis)")
                                                         dev.off()
@@ -330,14 +330,12 @@ function(input, output, session) {
         suppressMessages(pca_plt())
       })
       #download_pca
-      output$download_pca_rnaseq <- downloadHandler("rnaseq_pca.tiff",
+      output$download_pca_rnaseq <- downloadHandler("rnaseq_pca.svg",
                                                     content = function(file) {
                                                       #draw to a file
-                                                      ggsave(file, pca_plt(), device = "tiff",
-                                                             width = 15, height = 12, units = "cm",
-                                                             dpi = 300)
-                                                    },
-                                                    contentType = "image/png")
+                                                      ggsave(file, pca_plt(), device = "svg",
+                                                             width = 15, height = 12, units = "cm")
+                                                    })
       
       #Venn diagram
       venn_plt <- reactive({ggvenn(for_venn())})
@@ -345,14 +343,12 @@ function(input, output, session) {
         venn_plt()
       })
       #download venn
-      output$download_venn_rnaseq <- downloadHandler("rnaseq_venndiagram.tiff",
+      output$download_venn_rnaseq <- downloadHandler("rnaseq_venndiagram.svg",
                                                      content = function(file) {
                                                        #draw to a file
-                                                       ggsave(file, venn_plt(), device = "tiff",
-                                                              width = 15, height = 15, units = "cm",
-                                                              dpi = 300)
-                                                     },
-                                                     contentType = "image/png")
+                                                       ggsave(file, venn_plt(), device = "svg",
+                                                              width = 15, height = 15, units = "cm")
+                                                     })
       
       #UpSet plot
       upset_plt <- reactive({
@@ -365,14 +361,13 @@ function(input, output, session) {
         upset_plt()
       })
       #download upset
-      output$download_upset_rnaseq <- downloadHandler("rnaseq_upset.tiff",
+      output$download_upset_rnaseq <- downloadHandler("rnaseq_upset.svg",
                                                       content = function(file) {
                                                         #draw to a file
-                                                        tiff(file, width = 15, height = 10, units = "cm", res = 300, compression = "lzw")
+                                                        svg(file, width = 6, height = 4)
                                                         ComplexHeatmap::draw(upset_plt())
                                                         dev.off()
-                                                      },
-                                                      contentType = "image/png")
+                                                      })
       
       #heatmap of all genes
       output$heatmap_rnaseq <- renderD3heatmap({
@@ -381,19 +376,19 @@ function(input, output, session) {
                                    k_col = num_studies()))
       })
       #download button heatmap
-      output$download_heatmap_rnaseq <- downloadHandler("rnaseq_heatmap.tiff",
+      output$download_heatmap_rnaseq <- downloadHandler("rnaseq_heatmap.svg",
                                                         content = function(filename) {
                                                           annot <- rnaseq_design_input()[, c("condition", "study")]
                                                           rownames(annot) <- rnaseq_design_input()$sample
+                                                          svg(filename, height = 10)
                                                           pheatmap(cts_matrix(),
                                                                    cutree_rows = num_samples(),
                                                                    cutree_cols = num_studies(),
                                                                    show_rownames = F,
                                                                    color = colorRampPalette(c("yellow", "black", "purple"))(150),
-                                                                   annotation_col = annot,
-                                                                   filename = filename)
-                                                        },
-                                                        contentType = "image/png")
+                                                                   annotation_col = annot)
+                                                          dev.off()
+                                                        })
       #download heatmap data button
       output$download_heatmap_data_rnaseq <- downloadHandler("rnaseq_heatmap_data.csv",
                                                              content = function(filename) {
@@ -430,14 +425,12 @@ function(input, output, session) {
       })
       
       #download volcano plot
-      output$download_volcano_rnaseq <- downloadHandler("rnaseq_volcano_plot.tiff",
+      output$download_volcano_rnaseq <- downloadHandler("rnaseq_volcano_plot.svg",
                                                         content = function(file) {
                                                           #draw to a file
-                                                          ggsave(file, volcano_plt(), device = "tiff",
-                                                                 width = 22, height = 15, units = "cm",
-                                                                 dpi = 300)
-                                                        },
-                                                        contentType = "image/png")
+                                                          ggsave(file, volcano_plt(), device = "svg",
+                                                                 width = 22, height = 15, units = "cm")
+                                                        })
       
       #download volcano plot data
       output$download_volcano_data_rnaseq <- downloadHandler("rnaseq_volcano_data.csv",
@@ -534,14 +527,12 @@ function(input, output, session) {
             go_plt_rnaseq()
           )
           #create download plot
-          output$download_go_plot_rnaseq <- downloadHandler("rnaseq_go_plot.tiff",
+          output$download_go_plot_rnaseq <- downloadHandler("rnaseq_go_plot.svg",
                                                             content = function(file) {
                                                               #draw to a file
-                                                              ggsave(file, go_plt_rnaseq(), device = "tiff",
-                                                                     width = 30, height = 20, units = "cm",
-                                                                     dpi = 300)
-                                                            },
-                                                            contentType = "image/png")
+                                                              ggsave(file, go_plt_rnaseq(), device = "svg",
+                                                                     width = 30, height = 20, units = "cm")
+                                                            })
         })
       })
       
@@ -596,14 +587,12 @@ function(input, output, session) {
           #render the plot
           output$kegg_plot_rnaseq <- renderPlot(plt)
           #create download plot
-          output$download_kegg_plot_rnaseq <- downloadHandler("rnaseq_kegg_plot.tiff",
+          output$download_kegg_plot_rnaseq <- downloadHandler("rnaseq_kegg_plot.svg",
                                                               content = function(file) {
                                                                 #draw to a file
-                                                                ggsave(file, plt, device = "tiff",
-                                                                       width = 30, height = 20, units = "cm",
-                                                                       dpi = 300)
-                                                              },
-                                                              contentType = "image/png")
+                                                                ggsave(file, plt, device = "svg",
+                                                                       width = 30, height = 20, units = "cm")
+                                                              })
         })
       })
       
@@ -622,23 +611,22 @@ function(input, output, session) {
         #get the selected gene name
         gene_df <- meta_table_rnaseq()[input$rnaseq_DEGs_rows_selected,]
         gene_name <- rownames(gene_df)
-        nrows = floor(sqrt(num_studies()))    #define number of rows based on studies
+        nrows = num_studies() %/% 2    #define number of rows based on studies
+        ncols = ifelse(num_studies() %% 2 == 0, nrows, nrows+1) #define number of columns based on studies
         
         if (!(is.null(gene_df))) { #check if there is a row ro draw counts
           output$counts_message_rnaseq <- renderText("")
-          cts_plt_rnaseq <- reactive({draw_counts(studies_deseq(), gene_name, nrows)})
+          cts_plt_rnaseq <- reactive({draw_counts(studies_deseq(), gene_name, nrows, ncols)})
         }
         #render the drawn plot
         output$counts_plots_rnaseq <- renderPlot(cts_plt_rnaseq())
         #allow plot download
-        output$download_counts_plot_rnaseq <- downloadHandler(function() {paste(gene_name, "rnaseq_counts_plot.tiff", sep = "_")},
+        output$download_counts_plot_rnaseq <- downloadHandler(function() {paste(gene_name, "rnaseq_counts_plot.svg", sep = "_")},
                                                             content = function(file) {
                                                               #draw to a file
-                                                              ggsave(file, cts_plt_rnaseq(), device = "tiff",
-                                                                     width = 30, height = 20, units = "cm",
-                                                                     dpi = 300)
-                                                            },
-                                                            contentType = "image/png")
+                                                              ggsave(file, cts_plt_rnaseq(), device = "svg",
+                                                                     height = nrows * 4, width = ncols * 4)
+                                                            })
       })
       
     } #close rnaseq analysis logic after hitting start analysis
@@ -652,7 +640,7 @@ function(input, output, session) {
     if (input$main_tabs == "demo") {
       #provide info about starting the demo analysis
       shinyalert("Demo Running!", "Demo RNA-Seq meta-analysis is in progress... \nResults will appear soon!",
-                 type = "info", closeOnEsc = T, closeOnClickOutside = T)
+                 type = "info", closeOnEsc = T, closeOnClickOutside = T, timer = 7000)
       hideSpinner("go_plot_demo")
       hideSpinner("kegg_plot_demo")
       #Demo analysis progress
@@ -882,14 +870,13 @@ function(input, output, session) {
              breaks = 100, col = "grey", xlab = "Raw p-values (meta-analysis)")
       })
       #download p-values dist
-      output$download_pdist_demo <- downloadHandler("demo_pdist.tiff",
+      output$download_pdist_demo <- downloadHandler("demo_pdist.svg",
                                                     content = function(file) {
-                                                      tiff(file, width = 15, height = 12, units = "cm", res = 300, compression = "lzw")
+                                                      svg(file, width = 6, height = 4.5)
                                                       hist(fishcomb()$rawpval, main = "Fisher Method p-Values Distribution",
                                                            breaks = 100, col = "grey", xlab = "Raw p-values (meta-analysis)")
                                                       dev.off()
-                                                    },
-                                                    contentType = "image/png")
+                                                    })
       
       #PCA plot
       pca_plt <- reactive({
@@ -902,14 +889,12 @@ function(input, output, session) {
         suppressMessages(pca_plt())
       })
       #download_pca
-      output$download_pca_demo <- downloadHandler("demo_pca.tiff",
+      output$download_pca_demo <- downloadHandler("demo_pca.svg",
                                                   content = function(file) {
                                                     #draw to a file
-                                                    ggsave(file, pca_plt(), device = "tiff",
-                                                           width = 15, height = 12, units = "cm",
-                                                           dpi = 300)
-                                                  },
-                                                  contentType = "image/png")
+                                                    ggsave(file, pca_plt(), device = "svg",
+                                                           width = 15, height = 12, units = "cm")
+                                                  })
       
       #Venn diagram
       venn_plt <- reactive({ggvenn(for_venn())})
@@ -917,14 +902,12 @@ function(input, output, session) {
         venn_plt()
       })
       #download venn
-      output$download_venn_demo <- downloadHandler("demo_venndiagram.tiff",
+      output$download_venn_demo <- downloadHandler("demo_venndiagram.svg",
                                                    content = function(file) {
                                                      #draw to a file
-                                                     ggsave(file, venn_plt(), device = "tiff",
-                                                            width = 15, height = 15, units = "cm",
-                                                            dpi = 300)
-                                                   },
-                                                   contentType = "image/png")
+                                                     ggsave(file, venn_plt(), device = "svg",
+                                                            width = 15, height = 15, units = "cm")
+                                                   })
       
       #UpSet plot
       upset_plt <- reactive({
@@ -935,14 +918,13 @@ function(input, output, session) {
       })
       output$upset_demo <- renderPlot(upset_plt())
       #download upset
-      output$download_upset_demo <- downloadHandler("demo_upset.tiff",
+      output$download_upset_demo <- downloadHandler("demo_upset.svg",
                                                     content = function(file) {
                                                       #draw to a file
-                                                      tiff(file, width = 15, height = 10, units = "cm", res = 300, compression = "lzw")
+                                                      svg(file, width = 6, height = 4)
                                                       ComplexHeatmap::draw(upset_plt())
                                                       dev.off()
-                                                    },
-                                                    contentType = "image/png")
+                                                    })
       
       #heatmap of all genes
       output$heatmap_demo <- renderD3heatmap({
@@ -951,19 +933,19 @@ function(input, output, session) {
                                    k_col = num_studies()))
       })
       #download button heatmap
-      output$download_heatmap_demo <- downloadHandler("demo_heatmap.tiff",
+      output$download_heatmap_demo <- downloadHandler("demo_heatmap.svg",
                                                       content = function(filename) {
                                                         annot <- example_design()[, c("condition", "study")]
                                                         rownames(annot) <- example_design()$sample
+                                                        svg(filename, height = 10)
                                                         pheatmap(cts_matrix(),
                                                                  cutree_rows = num_samples(),
                                                                  cutree_cols = num_studies(),
                                                                  show_rownames = F,
                                                                  color = colorRampPalette(c("yellow", "black", "purple"))(150),
-                                                                 annotation_col = annot,
-                                                                 filename = filename)
-                                                      },
-                                                      contentType = "image/png")
+                                                                 annotation_col = annot)
+                                                        dev.off()
+                                                      })
       #download heatmap data button
       output$download_heatmap_data_demo <- downloadHandler("demo_heatmap_data.csv",
                                                            content = function(filename) {
@@ -1000,14 +982,12 @@ function(input, output, session) {
       })
       
       #download volcano plot
-      output$download_volcano_demo <- downloadHandler("demo_volcanplot.tiff",
+      output$download_volcano_demo <- downloadHandler("demo_volcanplot.svg",
                                                       content = function(file) {
                                                         #draw to a file
-                                                        ggsave(file, volcano_plt(), device = "tiff",
-                                                               width = 22, height = 15, units = "cm",
-                                                               dpi = 300)
-                                                      },
-                                                      contentType = "image/png")
+                                                        ggsave(file, volcano_plt(), device = "svg",
+                                                               width = 22, height = 15, units = "cm")
+                                                      })
       
       #download volcano plot data
       output$download_volcano_data_demo <- downloadHandler("demo_volcano_data.csv",
@@ -1096,14 +1076,12 @@ function(input, output, session) {
           #render the plot
           output$go_plot_demo <- renderPlot(go_plt_dm()) 
           #create download plot
-          output$download_go_plot_demo <- downloadHandler("demo_go_plot.tiff",
+          output$download_go_plot_demo <- downloadHandler("demo_go_plot.svg",
                                                           content = function(file) {
                                                             #draw to a file
-                                                            ggsave(file, go_plt_dm(), device = "tiff",
-                                                                   width = 30, height = 20, units = "cm",
-                                                                   dpi = 300)
-                                                          },
-                                                          contentType = "image/png")
+                                                            ggsave(file, go_plt_dm(), device = "svg",
+                                                                   width = 30, height = 20, units = "cm")
+                                                          })
         })
       })
       
@@ -1155,14 +1133,12 @@ function(input, output, session) {
           #render the plot
           output$kegg_plot_demo <- renderPlot(plt)
           #create download plot
-          output$download_kegg_plot_demo <- downloadHandler("demo_kegg_plot.tiff",
+          output$download_kegg_plot_demo <- downloadHandler("demo_kegg_plot.svg",
                                                             content = function(file) {
                                                               #draw to a file
-                                                              ggsave(file, plt, device = "tiff",
-                                                                     width = 30, height = 20, units = "cm",
-                                                                     dpi = 300)
-                                                            },
-                                                            contentType = "image/png")
+                                                              ggsave(file, plt, device = "svg",
+                                                                     width = 30, height = 20, units = "cm")
+                                                            })
         })
       })
 
@@ -1181,23 +1157,22 @@ function(input, output, session) {
         #get the selected gene name
         gene_df <- meta_table_demo()[input$demo_DEGs_rows_selected,]
         gene_name <- rownames(gene_df)
-        nrows = floor(sqrt(num_studies()))    #define number of rows based on studies
+        nrows = num_studies() %/% 2    #define number of rows based on studies
+        ncols = ifelse(num_studies() %% 2 == 0, nrows, nrows+1) #define number of columns based on studies
         
         if (!(is.null(input$demo_DEGs_rows_selected))) { #check if there is a row ro draw counts
           output$counts_message_demo <- renderText("")
-          cts_plt_dm <- reactive({draw_counts(studies_deseq(), gene_name, nrows)})
+          cts_plt_dm <- reactive({draw_counts(studies_deseq(), gene_name, nrows, ncols)})
         }
         #render the drawn plot
         output$counts_plots_demo <- renderPlot(cts_plt_dm())
         #allow plot download
-        output$download_counts_plot_demo <- downloadHandler(function() {paste(gene_name, "demo_counts_plot.tiff", sep = "_")},
+        output$download_counts_plot_demo <- downloadHandler(function() {paste(gene_name, "demo_counts_plot.svg", sep = "_")},
                                                             content = function(file) {
                                                               #draw to a file
-                                                              ggsave(file, cts_plt_dm(), device = "tiff",
-                                                                     width = 30, height = 20, units = "cm",
-                                                                     dpi = 300)
-                                                            },
-                                                            contentType = "image/png")
+                                                              ggsave(file, cts_plt_dm(), device = "svg",
+                                                                     height = nrows * 4, width = ncols * 4)
+                                                            })
       })
     }
   )

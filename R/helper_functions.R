@@ -11,7 +11,7 @@ organisms_go <- function() {
 }
 
 #draw counts of a gene
-draw_counts <- function(dds_list, gene_name, nrows) {
+draw_counts <- function(dds_list, gene_name, nrows, ncols) {
   #extract counts of the selected gene
   counts_list <- lapply(dds_list, function(x) {
     plotCounts(x, gene=gene_name, intgroup="condition", returnData=TRUE)
