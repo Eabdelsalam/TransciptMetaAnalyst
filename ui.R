@@ -3,7 +3,7 @@ ui <- dashboardPage(
   #define the skin
   skin = "green",
   
-  dashboardHeader(title = "TransciptMetaAnalyst"),
+  dashboardHeader(title = "TMA"),
   #close the header
   
   ###########################
@@ -87,10 +87,10 @@ ui <- dashboardPage(
               box(title = "RNA-Seq Quick Start",
                   p("To start the RNA-Seq meta analysis please perform the following steps:",
                     tags$ul(
-                      tags$li("After cleaning the raw RNA-Seq read files (either downloaded from public datbases of generated via your own experiments) of each sample, align them individually to the studied organism's reference genome."),
+                      tags$li("After cleaning the raw RNA-Seq read files (either downloaded from public databases of generated via your own experiments) of each sample, align them individually to the studied organism's reference genome."),
                       tags$li("Count the mapped reads to the reference genomic features of interest and combine all the counts in one file. Keeping genomic features as rows and the samples that will be included in the analysis as columns. To produce the final raw (unnormalized) counts comma-separated file.", strong("Note that the counts file should have a 'geneid' column.")),
-                      tags$li("Upload the ", strong("counts"),"file produced by any feature counting tool, e.g., featureCounts or htseq-count, as exaplined above to the raw counts placeholder.", strong(" Please refer to example counts file via the provided download link.")),
-                      tags$li("Upload the experimental design file.", strong(" Please refer to the example file via the procided download link."), "This file should contain at least 3 columns, namely 'sample' refers to the sample names used as columns in the counts file, 'study' refers to the study to which the sample belong, 'condition' referes to the treatment or control conditions (only two conditions allowed for comparison)."),
+                      tags$li("Upload the ", strong("counts"),"file produced by any feature counting tool, e.g., featureCounts or htseq-count, as explained above to the raw counts placeholder.", strong(" Please refer to example counts file via the provided download link.")),
+                      tags$li("Upload the experimental design file.", strong(" Please refer to the example file via the provided download link."), "This file should contain at least 3 columns, namely 'sample' refers to the sample names used as columns in the counts file, 'study' refers to the study to which the sample belong, 'condition' refers to the treatment or control conditions (only two conditions allowed for comparison)."),
                       tags$li("Hit",strong('Start Analysis!'), "button and wait for the results to appear.")
                     )),
                   solidHeader = T, width = 12, status = "info")
@@ -117,7 +117,7 @@ ui <- dashboardPage(
                                               downloadButton("download_pdist_rnaseq", label = "Download plot")),
                                      tabPanel(title = "PCA", plotOutput("pca_rnaseq", height = "480px"),
                                               downloadButton("download_pca_rnaseq", label = "Download plot")),
-                                     tabPanel(title = "Heatmap", d3heatmapOutput("heatmap_rnaseq", height = "480px"),
+                                     tabPanel(title = "Heatmap", plotlyOutput("heatmap_rnaseq", height = "480px"),
                                               downloadButton("download_heatmap_rnaseq", label = "Download plot"),
                                               downloadButton("download_heatmap_data_rnaseq", label = "Download data")),
                                      tabPanel(title = "Venn diagram", plotOutput("venn_rnaseq", height = "480px"),
@@ -181,7 +181,7 @@ ui <- dashboardPage(
                                 downloadButton("download_pdist_demo", label = "Download plot")),
                        tabPanel(title = "PCA", plotOutput("pca_demo", height = "480px"),
                                 downloadButton("download_pca_demo", label = "Download plot")),
-                       tabPanel(title = "Heatmap", d3heatmapOutput("heatmap_demo", height = "480px"),
+                       tabPanel(title = "Heatmap", plotlyOutput("heatmap_demo", height = "480px"),
                                 downloadButton("download_heatmap_demo", label = "Download plot"),
                                 downloadButton("download_heatmap_data_demo", label = "Download data")),
                        tabPanel(title = "Venn diagram", plotOutput("venn_demo", height = "480px"),
@@ -210,7 +210,7 @@ ui <- dashboardPage(
                                 plotOutput("kegg_plot_demo") %>% withSpinner(type = 6),
                                 downloadButton("download_kegg_table_demo", label = "Download KEGG table"),
                                 downloadButton("download_kegg_plot_demo", label = "Download KEGG plot"))),
-                box(title = "Count plots", status = "primary", solidHeader = T,
+                box(title = "Counts Plots", status = "primary", solidHeader = T,
                     textOutput("counts_message_demo"),
                     plotOutput("counts_plots_demo"),
                     downloadButton("download_counts_plot_demo", label = "Download counts plot"))
@@ -224,7 +224,10 @@ ui <- dashboardPage(
                 box(title = "Detailed User Guide",
                     solidHeader = T, width = 12, status = "danger",
                     h3("TransciptMetaAnalyst: Datailed User Manual"),
-                    p("A detailed user manual could be downloaded via this link."), ##### ADD LINK OF PDF FILE
+                    span("A detailed user manual could be downloaded via this"), ##### ADD LINK OF PDF FILE
+                    a("file",
+                      href = "TMA_Manual.pdf",
+                      target = "_blank",),
                     hr(),
                     h3("Contact us"),
                     span("For inquiries and/or feedback, please contact me via"),

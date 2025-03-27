@@ -7,7 +7,7 @@ source("R/test_files.R")
 
 #check if required packages is installed
 #list of packages required
-required_packages <- c("shiny", "shinydashboard", "shinyjs", "shinyalert", "shinycssloaders", "shiny.info", "DESeq2", "metaRNASeq", "tidyverse", "ggplot2", "ggrepel", "ggvenn", "ComplexHeatmap", "pheatmap", "d3heatmap", "EnhancedVolcano", "DT", "rbioapi", "clusterProfiler", "heatmaply", "gridExtra")
+required_packages <- c("shiny", "shinydashboard", "shinyjs", "shinyalert", "shinycssloaders", "shiny.info", "DESeq2", "metaRNASeq", "dplyr", "ggplot2", "ggrepel", "ggvenn", "ComplexHeatmap", "pheatmap", "EnhancedVolcano", "DT", "rbioapi", "clusterProfiler", "heatmaply", "gridExtra")
 
 #checking missing packages from list
 new_packages <- required_packages[!(required_packages %in% installed.packages()[,"Package"])]

@@ -371,9 +371,9 @@ function(input, output, session) {
                                                         dev.off()
                                                       })
       
-      #heatmap of all genes
-      output$heatmap_rnaseq <- renderD3heatmap({
-        suppressWarnings(d3heatmap(cts_matrix(),
+      #heatmap of meta-analysis DEGs
+      output$heatmap_rnaseq <- renderPlotly({
+        suppressWarnings(heatmaply(cts_matrix(),
                                    k_row = num_samples(),
                                    k_col = num_studies()))
       })
@@ -476,7 +476,7 @@ function(input, output, session) {
           all_go <- all_go[all_go$term.id != "GO:0008150", ] #remove main BP
           all_go <- all_go[all_go$term.id != "GO:0003674", ] #remove main MF
           all_go <- all_go[all_go$term.id != "GO:0005575", ] #remove main CC
-          all_go <- all_go %>% arrange(fdr) #sort from the lowerst FDR to the highest FDR
+          all_go <- all_go %>% arrange(fdr) #sort from the lowest FDR to the highest FDR
           return(all_go)
         })
         
@@ -925,9 +925,9 @@ function(input, output, session) {
                                                       dev.off()
                                                     })
       
-      #heatmap of all genes
-      output$heatmap_demo <- renderD3heatmap({
-        suppressWarnings(d3heatmap(cts_matrix(),
+      #heatmap of DEGs
+      output$heatmap_demo <- renderPlotly({
+        suppressWarnings(heatmaply(cts_matrix(),
                                    k_row = num_samples(),
                                    k_col = num_studies()))
       })
